@@ -29,7 +29,7 @@ def get_service_region() -> str:
     """Get region from local metadata server
     Region in format: projects/PROJECT_NUMBER/regions/REGION"""
     slug = "instance/region"
-    data = requests.get(METADATA_URI + slug, headers={"Metadata-Flavor": "Google"})
+    data = requests.get(METADATA_URI + slug, headers={"Metadata-Flavor": "Google"}, timeout=60)
     return data.content
 
 
@@ -41,6 +41,6 @@ def authenticated_request(url: str, method: str) -> str:
     id_token = google.oauth2.id_token.fetch_id_token(auth_req, url)
 
     resp = requests.request(
-        method, url, headers={"Authorization": f"Bearer {id_token}"}
-    )
+        method, url, headers={"Authorization": f"Bearer {id_token}"}, 
+    timeout=60)
     return resp.content
