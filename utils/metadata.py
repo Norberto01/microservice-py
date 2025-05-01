@@ -14,6 +14,7 @@
 
 import google.auth
 import requests
+from security import safe_requests
 
 METADATA_URI = "http://metadata.google.internal/computeMetadata/v1/"
 
@@ -29,7 +30,7 @@ def get_service_region() -> str:
     """Get region from local metadata server
     Region in format: projects/PROJECT_NUMBER/regions/REGION"""
     slug = "instance/region"
-    data = requests.get(METADATA_URI + slug, headers={"Metadata-Flavor": "Google"})
+    data = safe_requests.get(METADATA_URI + slug, headers={"Metadata-Flavor": "Google"})
     return data.content
 
 
